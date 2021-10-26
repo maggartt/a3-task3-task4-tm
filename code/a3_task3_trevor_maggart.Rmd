@@ -1,0 +1,87 @@
+---
+title: "Task 3 - Analyzing Sea Urchins"
+author: "Trevor Maggart"
+date: "10/26/2021"
+output: html_document
+---
+## Overview (fix this)
+
+This code analyzes the flow of plastics into various global seas via river transport. The data includes both microplastics (particles < 5 mm) and macroplastics (particles > 5 mm) and both are incorporated in the plots below. Specifically, the code below is focused on microplastics in river catchments across the world, as well as analyzing micro and macroplastic transport via rivers to the Gulf of Mexico. 
+
+### Data Citation
+
+Citation: Santa Barbara Coastal LTER and D. Reed. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b (Accessed 2021-10-26).
+
+### Setup
+
+```{r setup, message=F}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+### Install Packages
+
+To wrangle the data we will use the packages `tidyverse`, `here`, `janitor`, and `lubridate`.
+
+```{r packages}
+# Attach packages
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+library(kableExtra)
+```
+
+### Read in the urchins data & conver to 'lower_case_snake'
+
+```{r}
+# Read in the data
+urchins <- read_csv(here("data","urchins.csv")) %>%
+  clean_names() # Clean the data to lower_case_snake
+```
+
+### Data Visualization: Creating a histogram of the size distribution of red and purple urchins 
+
+```{r}
+ggplot(data = urchins, 
+       aes(x = size)) +
+  geom_histogram(bins = 10, aes(fill = common_name)) +
+  theme_grey() +
+  facet_wrap(~common_name) + # Facet wrap by 'common_name' 
+  scale_fill_manual(values = c("#b266b2", "#ff7f7f")) + # Allows me to manually choose colors 
+  labs(title = "Size Distribution of Purple and Red Sea Urchins",
+       x = "Size (cm)",
+       y = "Count",
+       key = "Common Name",
+       fill = "Common Name",
+       caption = "Fig 1. Distribution of purple and red sea urchins from the Santa Barbara Coastal Long Term Ecological Research") +
+  theme(axis.text.x = element_text(size=8),
+        axis.title.x = element_text(hjust = 0.5, vjust = 0.2),
+        plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.4))
+```
+
+### Descriptive Statistics Table: Create a finalized summary table that contains the following statistics for purple and red urchins (still ignoring site as a variable, but including species as a grouping variable): mean, median, standard deviation, and sample size. 
+
+```{r}
+urchins_summary <- urchins %>%
+  group_by(common_name) %>%
+  summarize(mean_size = mean(size, na.rm = TRUE),
+            median_size = median(size, na.rm = TRUE),
+            sd_size = sd(size, na.rm = TRUE),
+            sample_size = n())
+
+urchins_summary
+```
+
+### Use KableExtra to finalize the table
+
+```{r}
+urchins_summary %>%
+  kable(col.names = c("Common Name",
+                      "Mean Size (cm)",
+                      "Median Size (cm)",
+                      "Standard Deviation (cm)",
+                      "Sample Size"),
+        caption = "<center>Table 1. Summary of Statistics of Purple and Red Urchins<center>") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```
