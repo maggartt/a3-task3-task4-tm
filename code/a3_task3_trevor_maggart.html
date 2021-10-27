@@ -181,10 +181,10 @@ pre code {
 <h3>Data Citation</h3>
 <p>Citation: Santa Barbara Coastal LTER and D. Reed. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b" class="uri">https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b</a> (Accessed 2021-10-26).</p>
 </div>
-<div id="setup" class="section level3">
-<h3>Setup</h3>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)</code></pre>
 </div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)</code></pre>
 <div id="install-packages" class="section level3">
 <h3>Install Packages</h3>
 <p>To wrangle the data we will use the packages <code>tidyverse</code>, <code>here</code>, <code>janitor</code>, and <code>lubridate</code>.</p>
@@ -195,6 +195,9 @@ library(janitor)
 library(lubridate)
 library(kableExtra)</code></pre>
 </div>
+</div>
+<div id="section-1" class="section level2">
+<h2>Section 1</h2>
 <div id="read-in-the-urchins-data-conver-to-lower_case_snake" class="section level3">
 <h3>Read in the urchins data &amp; conver to ‘lower_case_snake’</h3>
 <pre class="r"><code># Read in the data
@@ -307,6 +310,735 @@ Red Urchin
 </td>
 <td style="text-align:right;">
 27408
+</td>
+</tr>
+</tbody>
+</table>
+<p>Observing the data we can see that the size distribution of purple urchins is slightly positively-skewed compared to the red urchins. Moreover, the purple urchins have a similar mean and median, and a smaller standard deviation showing the data to have less spread than the red urchins. On average, the red urchins are approximately 2.3 cm larger than the purple urchins, which results in a 33% size difference.</p>
+</div>
+</div>
+<div id="section-2" class="section level2">
+<h2>Section 2</h2>
+<div id="explore-purple-urchin-counts-by-site-and-year" class="section level3">
+<h3>Explore purple urchin counts by site and year</h3>
+<pre class="r"><code>purple_urchins &lt;- urchins %&gt;%
+  filter(common_name == &#39;Purple Urchin&#39;) %&gt;% # Include only purple urchins
+  mutate(mdy = mdy(date)) %&gt;% # Create a new date column
+  mutate(year = year(mdy)) %&gt;% # Create a new year column
+  mutate(site_full = case_when( # Use case_when to create a new site column
+    site == &quot;NAPL&quot; ~ &quot;Naples Reef&quot;,
+    site == &quot;AQUE&quot; ~ &quot;Arroyo Quemado Reef&quot;,
+    site == &quot;CARP&quot; ~ &quot;Carpinteria Reef&quot;,
+    site == &quot;MOHK&quot; ~ &quot;Mohawk Reef&quot;,
+    site == &quot;IVEE&quot; ~ &quot;Isla Vista Reef&quot;
+  ))</code></pre>
+</div>
+<div id="create-a-table-to-display-the-data" class="section level3">
+<h3>Create a table to display the data</h3>
+<pre class="r"><code>purple_count &lt;- purple_urchins %&gt;%
+  group_by(site_full, year) %&gt;%
+  summarize(count = n()) %&gt;%
+  kable(col.names = c(&quot;Site&quot;,
+                      &quot;Year&quot;,
+                      &quot;Count&quot;),
+        caption = &quot;&lt;center&gt;Table 1. Summary of Count of Purple Urchins by Site&lt;center&gt;&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, 
+                full_width = F, 
+                position = &quot;center&quot;,
+                latex_options = c(&quot;hold_position&quot;, &quot;repeat_header&quot;))
+
+purple_count</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<center>
+Table 1. Summary of Count of Purple Urchins by Site
+<center>
+</center>
+</center>
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Site
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+Count
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:right;">
+67
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2009
+</td>
+<td style="text-align:right;">
+926
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:right;">
+921
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+887
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+764
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+434
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+410
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+400
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+342
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:right;">
+406
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:right;">
+408
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+404
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arroyo Quemado Reef
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+98
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:right;">
+265
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2009
+</td>
+<td style="text-align:right;">
+1315
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:right;">
+930
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+1118
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+743
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+400
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+415
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+430
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+423
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:right;">
+404
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:right;">
+474
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+466
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carpinteria Reef
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+130
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+797
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+370
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+436
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+402
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+372
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:right;">
+362
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:right;">
+416
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+299
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Isla Vista Reef
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:right;">
+294
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2009
+</td>
+<td style="text-align:right;">
+1344
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:right;">
+923
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+958
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+856
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+399
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+440
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+418
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+402
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:right;">
+434
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:right;">
+459
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+369
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mohawk Reef
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+134
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:right;">
+246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2009
+</td>
+<td style="text-align:right;">
+1064
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:right;">
+942
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+883
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+738
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+357
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+368
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+430
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+384
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:right;">
+393
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:right;">
+462
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+474
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Naples Reef
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+100
 </td>
 </tr>
 </tbody>

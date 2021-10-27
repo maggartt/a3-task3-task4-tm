@@ -12,7 +12,7 @@ This code analyzes the flow of plastics into various global seas via river trans
 
 Citation: Santa Barbara Coastal LTER and D. Reed. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b (Accessed 2021-10-26).
 
-### Setup
+## Setup
 
 ```{r setup, message=F}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -30,6 +30,7 @@ library(janitor)
 library(lubridate)
 library(kableExtra)
 ```
+## Section 1
 
 ### Read in the urchins data & conver to 'lower_case_snake'
 
@@ -84,4 +85,50 @@ urchins_summary %>%
                       "Sample Size"),
         caption = "<center>Table 1. Summary of Statistics of Purple and Red Urchins<center>") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```
+
+Observing the data we can see that the size distribution of purple urchins is slightly positively-skewed compared to the red urchins. Moreover, the purple urchins have a similar mean and median, and a smaller standard deviation showing the data to have less spread than the red urchins. On average, the red urchins are approximately 2.3 cm larger than the purple urchins, which results in a 33% size difference. 
+
+## Section 2
+
+### Explore purple urchin counts by site and year
+
+```{r}
+purple_urchins <- urchins %>%
+  filter(common_name == 'Purple Urchin') %>% # Include only purple urchins
+  mutate(mdy = mdy(date)) %>% # Create a new date column
+  mutate(year = year(mdy)) %>% # Create a new year column
+  mutate(site_full = case_when( # Use case_when to create a new site column
+    site == "NAPL" ~ "Naples Reef",
+    site == "AQUE" ~ "Arroyo Quemado Reef",
+    site == "CARP" ~ "Carpinteria Reef",
+    site == "MOHK" ~ "Mohawk Reef",
+    site == "IVEE" ~ "Isla Vista Reef"
+  ))
+```
+
+### Create a table to display the data
+```{r}
+purple_count <- purple_urchins %>%
+  group_by(site_full, year) %>%
+  summarize(count = n())
+```
+  
+### Creating a graph to visualize the data
+```{r}
+ggplot(data = purple_count, 
+       aes(x = year, y = count)) +
+  geom_col(aes(fill = site_full)) +
+  theme_grey() +
+  facet_wrap(~site_full) + # Facet wrap by 'site_full' 
+  labs(title = "Distribution of Purple Urchins from 2008-2020",
+       x = "Year",
+       y = "Total Number of Purple Urchins",
+       key = "Site",
+       fill = "Site",
+       caption = "Fig 1. Distribution of purple urchins by site during the 2008-2020 from the Santa Barbara Coastal Long Term Ecological Research") +
+  theme(axis.text.x = element_text(size=8),
+        axis.title.x = element_text(hjust = 0.5, vjust = 0.2),
+        plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.2))
 ```
