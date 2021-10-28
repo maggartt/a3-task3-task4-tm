@@ -78,5 +78,22 @@ ggplot(data = purple_urchins_NAPL_2010,
 ggplot(data = purple_urchins_NAPL_2010) +
   geom_qq(aes(sample = size, color = treatment)) +
   theme_gray() +
-  facet_wrap(~ treatment)
+  facet_wrap(~ treatment) +
+  theme(legend.position = "none")
 ```
+
+## Making a table to summarize the data
+
+### Summarize the data
+```{r}
+purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
+  group_by(treatment) %>% # Group by 'treatment'
+  summarize(mean_size = round(mean(size, na.rm = TRUE)), # Create mean column
+            median_size = median(size, na.rm = TRUE), # Create median column
+            sd_size = round(sd(size, na.rm = TRUE)), # Create standard deviation column
+            sample_size = n())) # Get the count
+```
+
+### Create a summary table with `kableExtra`
+
+```{r}

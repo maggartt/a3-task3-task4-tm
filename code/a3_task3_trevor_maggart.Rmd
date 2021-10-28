@@ -46,10 +46,11 @@ urchins <- read_csv(here("data","urchins.csv")) %>%
 ```{r}
 ggplot(data = urchins, 
        aes(x = size)) +
-  geom_histogram(bins = 10, aes(fill = common_name)) +
+  geom_histogram(bins = 10, aes(fill = common_name, color = common_name)) +
   theme_grey() +
   facet_wrap(~common_name) + # Facet wrap by 'common_name' 
   scale_fill_manual(values = c("#b266b2", "#ff7f7f")) + # Allows me to manually choose colors 
+  scale_color_manual(values = c("white","white")) +
   labs(title = "Size Distribution of Purple and Red Sea Urchins",
        x = "Size (cm)",
        y = "Count",
@@ -59,7 +60,9 @@ ggplot(data = urchins,
   theme(axis.text.x = element_text(size=8),
         axis.title.x = element_text(hjust = 0.5, vjust = 0.2),
         plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 0.4))
+        plot.caption = element_text(hjust = 0.4),
+        legend.position = "none",
+)
 ```
 
 ### Descriptive Statistics Table: Create a finalized summary table that contains the following statistics for purple and red urchins (still ignoring site as a variable, but including species as a grouping variable): mean, median, standard deviation, and sample size. 
@@ -88,7 +91,7 @@ urchins_summary %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
 
-Observing the data we can see that the size distribution of purple urchins is slightly positively-skewed compared to the red urchins. Moreover, the purple urchins have a similar mean and median, and a smaller standard deviation showing the data to have less spread than the red urchins. On average, the red urchins are approximately 2.3 cm larger than the purple urchins, which results in a 33% size difference. 
+Observing the data we can see that the size distribution of purple urchins is slightly positively-skewed compared to the red urchins. Moreover, the purple urchins have a similar mean and median, and a smaller standard deviation showing the data to have less spread than the red urchins. On average, the red urchins are approximately 2.3 cm larger than the purple urchins, which results in a 41% size difference. 
 
 ## Section 2
 
