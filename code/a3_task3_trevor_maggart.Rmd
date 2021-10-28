@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ### Install Packages
 
-To wrangle the data we will use the packages `tidyverse`, `here`, `janitor`, and `lubridate`.
+To wrangle the data we will use the packages `tidyverse`, `here`, `janitor`, `kableExtra`, and `lubridate`.
 
 ```{r packages}
 # Attach packages
@@ -30,7 +30,7 @@ library(janitor)
 library(lubridate)
 library(kableExtra)
 ```
-## Section 1
+## Read in the data
 
 ### Read in the urchins data & conver to 'lower_case_snake'
 

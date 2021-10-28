@@ -1,0 +1,57 @@
+---
+title: "Task 4 - Analyzing Purple Urchins in Naples Reef"
+author: "Trevor Maggart"
+date: "10/28/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview (fix this)
+
+This code analyzes the flow of plastics into various global seas via river transport. The data includes both microplastics (particles < 5 mm) and macroplastics (particles > 5 mm) and both are incorporated in the plots below. Specifically, the code below is focused on microplastics in river catchments across the world, as well as analyzing micro and macroplastic transport via rivers to the Gulf of Mexico. 
+
+### Data Citation
+
+Citation: Santa Barbara Coastal LTER and D. Reed. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b (Accessed 2021-10-26).
+
+## Setup
+
+```{r setup, message=F}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+### Install Packages
+
+To wrangle the data we will use the packages `tidyverse`, `here`, `janitor`, `kableExtra`, and `lubridate`.
+
+```{r packages}
+# Attach packages
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+library(kableExtra)
+```
+
+## Read in the data
+
+### Read in the urchins data & conver to 'lower_case_snake'
+
+```{r}
+# Read in the data
+urchins <- read_csv(here("data","urchins.csv")) %>%
+  clean_names() # Clean the data to lower_case_snake
+```
+
+### Create a subset of the data
+
+#### Include Naples Reef observations for purple urchins observed in 2010
+
+```{r}
+purple_urchins_nreef_2010 <- urchins %>%
+  filter(common_name == "Purple Urchin") %>% # Filter for purple urchin
+  filter(site == )
+
