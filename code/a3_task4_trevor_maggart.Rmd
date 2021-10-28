@@ -91,9 +91,18 @@ purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
   summarize(mean_size = round(mean(size, na.rm = TRUE)), # Create mean column
             median_size = median(size, na.rm = TRUE), # Create median column
             sd_size = round(sd(size, na.rm = TRUE)), # Create standard deviation column
-            sample_size = n())) # Get the count
+            sample_size = n()) # Get the count
 ```
 
 ### Create a summary table with `kableExtra`
 
 ```{r}
+purple_urchins_NAPLE_2010_summary %>% 
+  kable(col.names = c("Treatment",
+                      "Mean Size (cm)",
+                      "Median Size (cm)",
+                      "Standard Deviation (cm)",
+                      "Sample Size"),
+        caption = "<center>Table 1. Summary of Statistics of Purple Urchins in the Naple Reef<center>") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```

@@ -130,9 +130,10 @@ ggplot(data = purple_count,
        y = "Total Number of Purple Urchins",
        key = "Site",
        fill = "Site",
-       caption = "Fig 1. Distribution of purple urchins by site during the 2008-2020 from the Santa Barbara Coastal Long Term Ecological Research") +
+       caption = "Fig 1. Distribution of purple urchins by site from 2008-2020 from \n the Santa Barbara Coastal Long Term Ecological Research") +
   theme(axis.text.x = element_text(size=8),
         axis.title.x = element_text(hjust = 0.5, vjust = 0.2),
         plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 0.2))
+        plot.caption = element_text(hjust = 0.5),
+        legend.position = "none")
 ```
