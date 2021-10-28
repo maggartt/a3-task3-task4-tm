@@ -51,7 +51,32 @@ urchins <- read_csv(here("data","urchins.csv")) %>%
 #### Include Naples Reef observations for purple urchins observed in 2010
 
 ```{r}
-purple_urchins_nreef_2010 <- urchins %>%
+purple_urchins_NAPL_2010 <- urchins %>%
   filter(common_name == "Purple Urchin") %>% # Filter for purple urchin
-  filter(site == )
+  filter(site == "NAPL") %>% # Filter for Naples Reef
+  mutate(Date = mdy(date)) %>% # Create a new date column
+  mutate(year = year(Date)) %>% # Create a new year column
+  filter(year == "2010") # Filter for 2010
+```
 
+## Explore histograms & QQ-plots for purple urchin size distribution
+
+### Comparing the Control and Annual treatments with a histogram
+
+```{r}
+ggplot(data = purple_urchins_NAPL_2010,
+       aes(x = size)) +
+  geom_histogram(aes(fill = treatment)) +
+   facet_wrap(~ treatment) +
+  theme_gray() +
+  theme(legend.position = "none")
+```
+
+### Comparing the Control and Annual treatments with a QQplot
+
+```{r}
+ggplot(data = purple_urchins_NAPL_2010) +
+  geom_qq(aes(sample = size, color = treatment)) +
+  theme_gray() +
+  facet_wrap(~ treatment)
+```

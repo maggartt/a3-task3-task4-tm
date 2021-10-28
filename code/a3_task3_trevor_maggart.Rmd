@@ -30,6 +30,7 @@ library(janitor)
 library(lubridate)
 library(kableExtra)
 ```
+
 ## Read in the data
 
 ### Read in the urchins data & conver to 'lower_case_snake'
@@ -66,9 +67,9 @@ ggplot(data = urchins,
 ```{r}
 urchins_summary <- urchins %>%
   group_by(common_name) %>%
-  summarize(mean_size = mean(size, na.rm = TRUE),
+  summarize(mean_size = round(mean(size, na.rm = TRUE)),
             median_size = median(size, na.rm = TRUE),
-            sd_size = sd(size, na.rm = TRUE),
+            sd_size = round(sd(size, na.rm = TRUE)),
             sample_size = n())
 
 urchins_summary
