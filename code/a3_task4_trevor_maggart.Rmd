@@ -4,14 +4,9 @@ author: "Trevor Maggart"
 date: "10/28/2021"
 output: html_document
 ---
+## Overview
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Overview (fix this)
-
-This code analyzes the flow of plastics into various global seas via river transport. The data includes both microplastics (particles < 5 mm) and macroplastics (particles > 5 mm) and both are incorporated in the plots below. Specifically, the code below is focused on microplastics in river catchments across the world, as well as analyzing micro and macroplastic transport via rivers to the Gulf of Mexico. 
+This code analyzes data pertaining to purple sea urchins collected by divers with the Santa Barbara Coastal Long Term Ecological Research program. The analysis below focuses on purple urchins at the Naple Reef site in the year 2010. 
 
 ### Data Citation
 
@@ -85,6 +80,7 @@ ggplot(data = purple_urchins_NAPL_2010) +
 ## Making a table to summarize the data
 
 ### Summarize the data
+
 ```{r}
 purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
   group_by(treatment) %>% # Group by 'treatment'
@@ -97,7 +93,7 @@ purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
 ### Create a summary table with `kableExtra`
 
 ```{r}
-purple_urchins_NAPLE_2010_summary %>% 
+purple_urchins_NAPL_2010_summary %>% 
   kable(col.names = c("Treatment",
                       "Mean Size (cm)",
                       "Median Size (cm)",

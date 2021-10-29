@@ -4,9 +4,10 @@ author: "Trevor Maggart"
 date: "10/26/2021"
 output: html_document
 ---
-## Overview (fix this)
 
-This code analyzes the flow of plastics into various global seas via river transport. The data includes both microplastics (particles < 5 mm) and macroplastics (particles > 5 mm) and both are incorporated in the plots below. Specifically, the code below is focused on microplastics in river catchments across the world, as well as analyzing micro and macroplastic transport via rivers to the Gulf of Mexico. 
+## Overview 
+
+This code analyzes data pertaining to red and purple sea urchins collected by divers with the Santa Barbara Coastal Long Term Ecological Research program. The analysis below looks at the distribution of urchins from 2008 - 2020 at five different sites. 
 
 ### Data Citation
 
@@ -112,6 +113,7 @@ purple_urchins <- urchins %>%
 ```
 
 ### Create a table to display the data
+
 ```{r}
 purple_count <- purple_urchins %>%
   group_by(site_full, year) %>%
@@ -119,6 +121,7 @@ purple_count <- purple_urchins %>%
 ```
   
 ### Creating a graph to visualize the data
+
 ```{r}
 ggplot(data = purple_count, 
        aes(x = year, y = count)) +
