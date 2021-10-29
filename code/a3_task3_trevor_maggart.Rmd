@@ -34,7 +34,7 @@ library(kableExtra)
 
 ### Read in the data
 
-Read in the urchins data & conver to 'lower_case_snake'
+Read in the urchins data & convert to 'lower_case_snake'
 
 ```{r}
 # Read in the data
@@ -149,7 +149,8 @@ ggplot(data = purple_count,
        aes(x = year, y = count)) +
   geom_col(aes(fill = site_full)) +
   theme_grey() +
-  facet_wrap(~site_full) + # Facet wrap by 'site_full' 
+  facet_wrap(~site_full,
+             scales = 'free_x') + # Facet wrap by 'site_full' 
   labs(title = "Distribution of Purple Urchins from 2008-2020",
        x = "Year",
        y = "Total Number of Purple Urchins",
