@@ -129,6 +129,9 @@ ggplot(data = purple_count,
        aes(x = year, y = count)) +
   geom_line(aes(color = site_full)) +
   theme_grey() +
+  scale_color_manual(values = c("#ff9999", "#ffca89", "#fffa78", "#bdf2a7", "#7bead6")) +
+  scale_x_continuous(limits=c(2008,2020)) + 
+  scale_y_continuous(limits=c(0,1200)) +
   labs(title = "Distribution of Purple Urchins from 2008-2020",
        x = "Year",
        y = "Total Number of Purple Urchins",
@@ -147,10 +150,12 @@ ggplot(data = purple_count,
 ```{r}
 ggplot(data = purple_count, 
        aes(x = year, y = count)) +
-  geom_col(aes(fill = site_full)) +
+  geom_col(aes(fill = site_full, color = site_full)) +
   theme_grey() +
   facet_wrap(~site_full,
              scales = 'free_x') + # Facet wrap by 'site_full' 
+  scale_color_manual(values = c("white", "white", "white", "white", "white")) +
+  scale_fill_manual(values = c("#ff9999", "#ffca89", "#fffa78", "#bdf2a7", "#7bead6")) +
   labs(title = "Distribution of Purple Urchins from 2008-2020",
        x = "Year",
        y = "Total Number of Purple Urchins",
