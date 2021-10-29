@@ -13,7 +13,7 @@ This code analyzes data pertaining to red and purple sea urchins collected by di
 
 Citation: Santa Barbara Coastal LTER and D. Reed. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b (Accessed 2021-10-26).
 
-## Setup
+### Setup
 
 ```{r setup, message=F}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -32,7 +32,7 @@ library(lubridate)
 library(kableExtra)
 ```
 
-## Read in the data
+### Read in the data
 
 Read in the urchins data & conver to 'lower_case_snake'
 
@@ -44,7 +44,7 @@ urchins <- read_csv(here("data","urchins.csv")) %>%
 
 ### Data Visualization
 
-Creating a histogram of the size distribution of red and purple urchins 
+Create a histogram of the size distribution of red and purple urchins 
 
 ```{r}
 ggplot(data = urchins, 
@@ -75,12 +75,10 @@ Create a finalized summary table that contains the following statistics for purp
 ```{r}
 urchins_summary <- urchins %>%
   group_by(common_name) %>%
-  summarize(mean_size = round(mean(size, na.rm = TRUE)),
+  summarize(mean_size = mean(size, na.rm = TRUE),
             median_size = median(size, na.rm = TRUE),
-            sd_size = round(sd(size, na.rm = TRUE)),
+            sd_size = sd(size, na.rm = TRUE),
             sample_size = n())
-
-urchins_summary
 ```
 
 ### Use KableExtra to finalize the table
@@ -92,7 +90,8 @@ urchins_summary %>%
                       "Median Size (cm)",
                       "Standard Deviation (cm)",
                       "Sample Size"),
-        caption = "<center>Table 1. Summary of Statistics of Purple and Red Urchins<center>") %>%
+        caption = "<center>Table 1. Summary of Statistics of Purple and Red Urchins<center>",
+        digits = 2) %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
 
@@ -123,8 +122,27 @@ purple_count <- purple_urchins %>%
   group_by(site_full, year) %>%
   summarize(count = n())
 ```
-  
-### Creating a graph to visualize the data
+### Create a line graph to visualize the data
+
+```{r}
+ggplot(data = purple_count,
+       aes(x = year, y = count)) +
+  geom_line(aes(color = site_full)) +
+  theme_grey() +
+  labs(title = "Distribution of Purple Urchins from 2008-2020",
+       x = "Year",
+       y = "Total Number of Purple Urchins",
+       key = "Site",
+       fill = "Site",
+       color = "Site Location",
+       caption = "Fig 1.1 Distribution of purple urchins by site from 2008-2020 from \n the Santa Barbara Coastal Long Term Ecological Research") +
+  theme(axis.text.x = element_text(size=8),
+        axis.title.x = element_text(hjust = 0.5, vjust = 0.2),
+        plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5))
+```
+
+### Create a histogram to visualize the data
 
 ```{r}
 ggplot(data = purple_count, 
@@ -137,7 +155,7 @@ ggplot(data = purple_count,
        y = "Total Number of Purple Urchins",
        key = "Site",
        fill = "Site",
-       caption = "Fig 1. Distribution of purple urchins by site from 2008-2020 from \n the Santa Barbara Coastal Long Term Ecological Research") +
+       caption = "Fig 1.2 Distribution of purple urchins by site from 2008-2020 from \n the Santa Barbara Coastal Long Term Ecological Research") +
   theme(axis.text.x = element_text(size=8),
         axis.title.x = element_text(hjust = 0.5, vjust = 0.2),
         plot.title = element_text(hjust = 0.5),

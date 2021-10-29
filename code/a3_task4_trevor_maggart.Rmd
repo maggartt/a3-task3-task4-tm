@@ -56,37 +56,52 @@ purple_urchins_NAPL_2010 <- urchins %>%
 
 ### Explore histograms & QQ-plots for purple urchin size distribution
 
-#### Comparing the Control and Annual treatments with a histogram
+#### Compare the Control and Annual treatments with a histogram
 
 ```{r}
 ggplot(data = purple_urchins_NAPL_2010,
        aes(x = size)) +
-  geom_histogram(aes(fill = treatment)) +
-   facet_wrap(~ treatment) +
+  geom_histogram(aes(fill = treatment, color = treatment),bins=10) +
+  scale_color_manual(values = c("white","white")) +
+  facet_wrap(~ treatment) +
   theme_gray() +
-  theme(legend.position = "none")
+  labs(x = "Size (cm)",
+       y = "Count",
+       caption = "Histogram comparing the size distribution of the different treatment groups") +
+  theme(legend.position = "none",
+        plot.caption = element_text(hjust = 0.5),
+)
 ```
 
-#### Comparing the Control and Annual treatments with a QQplot
+#### Compare the Control and Annual treatments with a QQplot
 
 ```{r}
-ggplot(data = purple_urchins_NAPL_2010) +
+ggplot(data = purple_urchins_NAPL_2010, aes(sample=size)) +
   geom_qq(aes(sample = size, color = treatment)) +
+  stat_qq_line() +
   theme_gray() +
   facet_wrap(~ treatment) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  labs(x = "Theoretical Quantiles",
+       y = "Size (cm)",
+       caption = "QQ-plot comparing the size distribution of the different treatment groups") +
+  theme(legend.position = "none",
+        plot.caption = element_text(hjust = 0.5),
+)
 ```
 
-### Making a table to summarize the data
+We can see by analyzing the graphs that both the treatment groups, annual and control, are positively skewed. This trend is more apparent in the annual treatment, but it is still slightly evident in control treatment as well. In addition, both plots show that our data distribution is not normally distributed. This is apparent in the QQplot as the stat line does not match the tail ends of the distribution. 
+
+### Make a table to summarize the data
 
 Summarize the data
 
 ```{r}
 purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
   group_by(treatment) %>% # Group by 'treatment'
-  summarize(mean_size = round(mean(size, na.rm = TRUE)), # Create mean column
+  summarize(mean_size = mean(size, na.rm = TRUE), # Create mean column
             median_size = median(size, na.rm = TRUE), # Create median column
-            sd_size = round(sd(size, na.rm = TRUE)), # Create standard deviation column
+            sd_size = sd(size, na.rm = TRUE), # Create standard deviation column
             sample_size = n()) # Get the count
 ```
 
@@ -94,7 +109,8 @@ purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
 
 ```{r}
 purple_urchins_NAPL_2010_summary %>% 
-  kable(col.names = c("Treatment",
+  kable(digits = 2,
+        col.names = c("Treatment",
                       "Mean Size (cm)",
                       "Median Size (cm)",
                       "Standard Deviation (cm)",
@@ -103,4 +119,4 @@ purple_urchins_NAPL_2010_summary %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
 
-We can see by analyzing the graphs that both the treatment groups, annual and control, are positively skewed. This trend is more apparent in the annual treatment, but it is still slightly evident in control treatment as well. 
+This table supports what the graphs display. There is not a substantial difference in mean, median, nor standard deviation. However, to truly know significance, we should conduct additional analyses in future work. 
