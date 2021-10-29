@@ -34,7 +34,7 @@ library(kableExtra)
 
 ## Read in the data
 
-### Read in the urchins data & conver to 'lower_case_snake'
+Read in the urchins data & conver to 'lower_case_snake'
 
 ```{r}
 # Read in the data
@@ -42,7 +42,9 @@ urchins <- read_csv(here("data","urchins.csv")) %>%
   clean_names() # Clean the data to lower_case_snake
 ```
 
-### Data Visualization: Creating a histogram of the size distribution of red and purple urchins 
+### Data Visualization
+
+Creating a histogram of the size distribution of red and purple urchins 
 
 ```{r}
 ggplot(data = urchins, 
@@ -66,7 +68,9 @@ ggplot(data = urchins,
 )
 ```
 
-### Descriptive Statistics Table: Create a finalized summary table that contains the following statistics for purple and red urchins (still ignoring site as a variable, but including species as a grouping variable): mean, median, standard deviation, and sample size. 
+### Descriptive Statistics Table 
+
+Create a finalized summary table that contains the following statistics for purple and red urchins (still ignoring site as a variable, but including species as a grouping variable): mean, median, standard deviation, and sample size. 
 
 ```{r}
 urchins_summary <- urchins %>%
@@ -96,7 +100,7 @@ Observing the data we can see that the size distribution of purple urchins is sl
 
 ## Section 2
 
-### Explore purple urchin counts by site and year
+Explore purple urchin counts by site and year
 
 ```{r}
 purple_urchins <- urchins %>%
@@ -140,3 +144,5 @@ ggplot(data = purple_count,
         plot.caption = element_text(hjust = 0.5),
         legend.position = "none")
 ```
+
+This data may not accurately portray the overall trends in purple sea urchin populations along the coast of Santa Barbara. The data was collected at long-term kelp removal sites, which may not be representative of the environmental conditions of the entire coast of Santa Barbara. It is apparent that there has been a decrease in purple sea urchin populations across these sites; however, whether or not we can extrapolate that trend to all environments containing purple sea urchins is uncertain. Moreover, the significant drop around 2020 could be due to lack of sampling caused by the COVID pandemic. 

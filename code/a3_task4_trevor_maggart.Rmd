@@ -12,7 +12,7 @@ This code analyzes data pertaining to purple sea urchins collected by divers wit
 
 Citation: Santa Barbara Coastal LTER and D. Reed. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b (Accessed 2021-10-26).
 
-## Setup
+### Setup
 
 ```{r setup, message=F}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -31,9 +31,9 @@ library(lubridate)
 library(kableExtra)
 ```
 
-## Read in the data
+### Read in the data
 
-### Read in the urchins data & conver to 'lower_case_snake'
+Read in the urchins data & conver to 'lower_case_snake'
 
 ```{r}
 # Read in the data
@@ -43,7 +43,7 @@ urchins <- read_csv(here("data","urchins.csv")) %>%
 
 ### Create a subset of the data
 
-#### Include Naples Reef observations for purple urchins observed in 2010
+Include Naples Reef observations for purple urchins observed in 2010
 
 ```{r}
 purple_urchins_NAPL_2010 <- urchins %>%
@@ -54,9 +54,9 @@ purple_urchins_NAPL_2010 <- urchins %>%
   filter(year == "2010") # Filter for 2010
 ```
 
-## Explore histograms & QQ-plots for purple urchin size distribution
+### Explore histograms & QQ-plots for purple urchin size distribution
 
-### Comparing the Control and Annual treatments with a histogram
+#### Comparing the Control and Annual treatments with a histogram
 
 ```{r}
 ggplot(data = purple_urchins_NAPL_2010,
@@ -67,7 +67,7 @@ ggplot(data = purple_urchins_NAPL_2010,
   theme(legend.position = "none")
 ```
 
-### Comparing the Control and Annual treatments with a QQplot
+#### Comparing the Control and Annual treatments with a QQplot
 
 ```{r}
 ggplot(data = purple_urchins_NAPL_2010) +
@@ -77,9 +77,9 @@ ggplot(data = purple_urchins_NAPL_2010) +
   theme(legend.position = "none")
 ```
 
-## Making a table to summarize the data
+### Making a table to summarize the data
 
-### Summarize the data
+Summarize the data
 
 ```{r}
 purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
@@ -90,7 +90,7 @@ purple_urchins_NAPL_2010_summary <- purple_urchins_NAPL_2010 %>%
             sample_size = n()) # Get the count
 ```
 
-### Create a summary table with `kableExtra`
+#### Create a summary table with `kableExtra`
 
 ```{r}
 purple_urchins_NAPL_2010_summary %>% 
@@ -102,3 +102,5 @@ purple_urchins_NAPL_2010_summary %>%
         caption = "<center>Table 1. Summary of Statistics of Purple Urchins in the Naple Reef<center>") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
+
+We can see by analyzing the graphs that both the treatment groups, annual and control, are positively skewed. This trend is more apparent in the annual treatment, but it is still slightly evident in control treatment as well. 
